@@ -2,90 +2,99 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivityFragment">
+    android:paddingTop="0dp"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivityFragment"
+    android:background="@color/background_floating_material_dark">
 
 
     <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/d"
-        android:layout_alignTop="@+id/b"
-        android:layout_toStartOf="@+id/c"
-        android:background="#ff262626"
-        android:textColor="#ff4282a9"
+        android:background="@drawable/buttonshape_d"
+        android:textColor="#ff20577e"
         style="@style/AlertDialog.AppCompat.Light"
-        android:text="D" />
+        android:text="D"
+        android:elevation="5dp"
+        android:layout_above="@+id/c"
+        android:layout_toStartOf="@+id/c" />
     <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:text="A"
         android:id="@+id/a"
         android:layout_above="@+id/b"
         android:layout_toStartOf="@+id/b"
-        android:background="#ff2f0f08"
-        android:textColor="#ffb72200"
-        style="@style/AlertDialog.AppCompat.Light" />
+        android:background="@drawable/buttonshape_a"
+        android:textColor="#ffa3221c"
+        style="@style/AlertDialog.AppCompat.Light"
+        android:elevation="5dp" />
 
     <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:text="B"
         android:id="@+id/b"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="23dp"
-        android:background="#ff202009"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/buttonshape_b"
         android:textColor="#ffc2c12d"
-        style="@style/AlertDialog.AppCompat.Light" />
+        style="@style/AlertDialog.AppCompat.Light"
+        android:elevation="5dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:id="@+id/c"
         android:layout_below="@+id/b"
         android:layout_toStartOf="@+id/b"
-        android:background="#ff072415"
-        android:textColor="#ff50a27c"
+        android:background="@drawable/buttonshape_c"
+        android:textColor="#ff4a9572"
         style="@style/AlertDialog.AppCompat.Light"
-        android:text="C" />
+        android:text="C"
+        android:elegantTextHeight="false"
+        android:elevation="5dp" />
     <Button
         android:layout_width="70dp"
-        android:layout_height="40dp"
+        android:layout_height="20dp"
         android:text="E"
         android:id="@+id/e"
-        android:layout_below="@+id/c"
-        android:layout_toEndOf="@+id/connect"
-        android:background="#ff250c26"
-        android:textColor="#ffa95ff6" />
+        android:background="@drawable/buttonshape_ef"
+        android:textColor="#ff60376b"
+        android:elevation="5dp"
+        android:layout_alignTop="@+id/f"
+        android:layout_toEndOf="@+id/connect" />
     <Button
         android:layout_width="70dp"
-        android:layout_height="40dp"
+        android:layout_height="20dp"
         android:text="F"
         android:id="@+id/f"
-        android:layout_below="@+id/c"
-        android:layout_toStartOf="@+id/connect"
-        android:background="#ff250c26"
-        android:textColor="#ffa95ff6" />
+        android:background="@drawable/buttonshape_ef"
+        android:textColor="#ff60376b"
+        android:elevation="50dp"
+        android:layout_below="@+id/joybutton"
+        android:layout_toStartOf="@+id/connect" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/address"
         android:hint="Bluetooth Address"
-        android:layout_marginBottom="24dp"
-        android:layout_above="@+id/connect"
+        style="@style/Base.TextAppearance.AppCompat.Inverse"
+        android:layout_below="@+id/coordinates"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="35dp"
         android:text="Connect"
         android:id="@+id/connect"
-        android:layout_alignTop="@+id/d"
-        android:layout_centerHorizontal="true"
         android:alpha="255"
-        style="@style/Base.Theme.AppCompat.Light.Dialog" />
+        style="@style/Base.Widget.AppCompat.PopupMenu"
+        android:background="#ff9e9ea1"
+        android:layout_alignTop="@+id/joybutton"
+        android:layout_centerHorizontal="true" />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -93,6 +102,7 @@
         android:id="@+id/joybutton"
         android:background="@null"
         android:src="@mipmap/circlejoystick_s"
+        android:elevation="4dp"
         android:layout_alignTop="@+id/a"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@+id/f"
@@ -105,7 +115,8 @@
         android:id="@+id/coordinates"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/f" />
+        android:layout_toStartOf="@+id/f"
+        android:visibility="invisible" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -115,5 +126,15 @@
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/e"
         android:layout_alignEnd="@+id/b" />
+
+    <ImageView
+        android:layout_width="170dp"
+        android:layout_height="170dp"
+        android:id="@+id/joystickBase"
+
+        android:background="@mipmap/circlejoystick"
+        android:layout_marginStart="24dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>

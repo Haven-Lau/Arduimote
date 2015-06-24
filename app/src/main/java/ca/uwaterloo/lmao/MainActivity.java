@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,23 +24,34 @@ public class MainActivity extends ActionBarActivity {
     private Set<BluetoothDevice> pairedDevices = null;
     private ArrayAdapter<String> BTArrayAdapter = null;
     private ListView connectController = null;
-    public View mDecorView = getWindow().getDecorView();
-
+    private Handler mHandler = new Handler();
+    private Runnable immersiveView = new Runnable() {
+        public void run() {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mDecorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-                        );
-
         BTArrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1);
     }
 
+
+    @Override
+    public void onWindowFocusChanged (boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            mHandler.post(immersiveView);
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

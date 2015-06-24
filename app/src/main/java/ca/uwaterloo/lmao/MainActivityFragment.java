@@ -3,6 +3,7 @@ package ca.uwaterloo.lmao;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Handler;
@@ -37,8 +38,8 @@ import static java.lang.Math.*;
 public class MainActivityFragment extends Fragment {
 
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
-    private BluetoothAdapter mAdapter = null;
-    private OutputStream outStream = null;
+    private static BluetoothAdapter mAdapter = null;
+    private static OutputStream outStream = null;
     private String address = "";
     private int message = 0;
     private int aButton = 0;
@@ -58,9 +59,9 @@ public class MainActivityFragment extends Fragment {
     private long data_ = 0;
     private double joyPower = 0;
     private double joyAngle = 0;
-    private BluetoothSocket mSocket = null;
-    private Timer timer;
-    private TimerTask sendMessage;
+    private static BluetoothSocket mSocket = null;
+    private static Timer timer;
+    private static TimerTask sendMessage;
     private final Handler handler = new Handler();
 
     public MainActivityFragment() {
@@ -299,54 +300,6 @@ public class MainActivityFragment extends Fragment {
                 return false;
             }
         });
-        // Get bluetooth address
-        Button connect = (Button)rootView.findViewById(R.id.connect);
-        connect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Button connectBtn = (Button)rootView.findViewById(R.id.connect);
-                EditText temp = (EditText) rootView.findViewById(R.id.address);
-                address = temp.getText().toString();
-
-                // Get the bluetooth device
-                BluetoothDevice device = null;
-                try {
-                    device = mAdapter.getRemoteDevice(address);
-                }catch (Exception e){
-                    Toast.makeText(getActivity().getApplicationContext(),"Invalid Address",Toast.LENGTH_LONG).show();
-                }
-                if (device == null)
-                    return;
-
-                try {
-                    mSocket = createBluetoothSocket(device);
-                } catch (Exception e) {
-
-                }
-
-                mAdapter.cancelDiscovery();
-
-                try {
-                    // try connecting to socket
-                    mSocket.connect();
-                } catch (Exception e) {
-                    try {
-                        mSocket.close();
-                    } catch (Exception e1) {
-                    }
-                }
-
-                try {
-                    outStream = mSocket.getOutputStream();
-                    timer.schedule(sendMessage, 0, 10);
-                    Toast.makeText(getActivity().getApplicationContext(), "Connection Established", Toast.LENGTH_SHORT).show();
-                    temp.setEnabled(false);
-                    connectBtn.setEnabled(false);
-                } catch (IOException e) {
-
-                }
-            }
-        });
         return rootView;
     }
 
@@ -361,7 +314,7 @@ public class MainActivityFragment extends Fragment {
         Log.d("123",mAdapter.isEnabled() + "");
     }
 
-    private BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
+    private static BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
         if (Build.VERSION.SDK_INT >= 10) {
             try {
                 final Method m = device.getClass().getMethod("createInsecureRfcommSocketToServiceRecord", new Class[] {UUID.class});
@@ -369,5 +322,42 @@ public class MainActivityFragment extends Fragment {
             } catch (Exception e) { }
         }
         return device.createInsecureRfcommSocketToServiceRecord(MY_UUID);
+    }
+
+    public static void connect (String address, Context context) {
+        BluetoothDevice device = null;
+        try {
+            device = mAdapter.getRemoteDevice(address);
+        }catch (Exception e){
+            Toast.makeText(context,"Invalid Address",Toast.LENGTH_LONG).show();
+        }
+        if (device == null)
+            return;
+
+        try {
+            mSocket = createBluetoothSocket(device);
+        } catch (Exception e) {
+
+        }
+
+        mAdapter.cancelDiscovery();
+
+        try {
+            // try connecting to socket
+            mSocket.connect();
+        } catch (Exception e) {
+            try {
+                mSocket.close();
+            } catch (Exception e1) {
+            }
+        }
+
+        try {
+            outStream = mSocket.getOutputStream();
+            timer.schedule(sendMessage, 0, 10);
+            Toast.makeText(context, "Connection Established", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+
+        }
     }
 }

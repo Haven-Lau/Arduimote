@@ -2,32 +2,32 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\haven\Documents\LMAO-master\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.1.1\jars\classes.jar"
+        jar="/Users/ernestwong/Desktop/AndroidProject/joystick-controller/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/jars/classes.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="a3ff3c506644c820eb2bdf06e8339f72be578551">
-        <dex dex="C:\Users\haven\Documents\LMAO-master\app\build\intermediates\pre-dexed\debug\classes-54c00c1687348bdddcc71825ee4bf24349098509.jar" />
+        <dex dex="/Users/ernestwong/Desktop/AndroidProject/joystick-controller/app/build/intermediates/pre-dexed/debug/classes-6272bbe24685931eb13aebcac9045d4984eeb5cd.jar" />
     </item>
     <item
-        jar="C:\Users\haven\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.1.1\support-annotations-22.1.1.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
-        <dex dex="C:\Users\haven\Documents\LMAO-master\app\build\intermediates\pre-dexed\debug\support-annotations-22.1.1-5e9343ffc6c6194a8608a2d6473df514fdb52da5.jar" />
-    </item>
-    <item
-        jar="C:\Users\haven\Documents\LMAO-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.1.1\jars\classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
-        <dex dex="C:\Users\haven\Documents\LMAO-master\app\build\intermediates\pre-dexed\debug\classes-d38c082578c6f5fa572cc418ddfe166402c18495.jar" />
-    </item>
-    <item
-        jar="C:\Users\haven\Documents\LMAO-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.1.1\jars\libs\internal_impl-22.1.1.jar"
+        jar="/Users/ernestwong/Desktop/AndroidProject/joystick-controller/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/libs/internal_impl-22.1.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="9e070ad32b2700b0343e8e0cccc437733d91ba3a">
-        <dex dex="C:\Users\haven\Documents\LMAO-master\app\build\intermediates\pre-dexed\debug\internal_impl-22.1.1-5a6bb02dac8d0dcadb91ea3a0e9e86799c78aa0b.jar" />
+        <dex dex="/Users/ernestwong/Desktop/AndroidProject/joystick-controller/app/build/intermediates/pre-dexed/debug/internal_impl-22.1.1-7ec9f31fe2f768e1a98ef1d7d02acb0185af02dd.jar" />
+    </item>
+    <item
+        jar="/Users/ernestwong/Desktop/AndroidProject/joystick-controller/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
+        <dex dex="/Users/ernestwong/Desktop/AndroidProject/joystick-controller/app/build/intermediates/pre-dexed/debug/classes-e5e3619a48965d06cf3797d6ec794f1430c498ca.jar" />
+    </item>
+    <item
+        jar="/Users/ernestwong/android-sdks/extras/android/m2repository/com/android/support/support-annotations/22.1.1/support-annotations-22.1.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
+        <dex dex="/Users/ernestwong/Desktop/AndroidProject/joystick-controller/app/build/intermediates/pre-dexed/debug/support-annotations-22.1.1-c0d93ca29ceac3ee26b23fc66c95172421a1c2aa.jar" />
     </item>
 
 </items>

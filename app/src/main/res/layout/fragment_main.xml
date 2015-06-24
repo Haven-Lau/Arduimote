@@ -1,0 +1,119 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivityFragment">
+
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/d"
+        android:layout_alignTop="@+id/b"
+        android:layout_toStartOf="@+id/c"
+        android:background="#ff262626"
+        android:textColor="#ff4282a9"
+        style="@style/AlertDialog.AppCompat.Light"
+        android:text="D" />
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="A"
+        android:id="@+id/a"
+        android:layout_above="@+id/b"
+        android:layout_toStartOf="@+id/b"
+        android:background="#ff2f0f08"
+        android:textColor="#ffb72200"
+        style="@style/AlertDialog.AppCompat.Light" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="B"
+        android:id="@+id/b"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="23dp"
+        android:background="#ff202009"
+        android:textColor="#ffc2c12d"
+        style="@style/AlertDialog.AppCompat.Light" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/c"
+        android:layout_below="@+id/b"
+        android:layout_toStartOf="@+id/b"
+        android:background="#ff072415"
+        android:textColor="#ff50a27c"
+        style="@style/AlertDialog.AppCompat.Light"
+        android:text="C" />
+    <Button
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:text="E"
+        android:id="@+id/e"
+        android:layout_below="@+id/c"
+        android:layout_toEndOf="@+id/connect"
+        android:background="#ff250c26"
+        android:textColor="#ffa95ff6" />
+    <Button
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:text="F"
+        android:id="@+id/f"
+        android:layout_below="@+id/c"
+        android:layout_toStartOf="@+id/connect"
+        android:background="#ff250c26"
+        android:textColor="#ffa95ff6" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/address"
+        android:hint="Bluetooth Address"
+        android:layout_marginBottom="24dp"
+        android:layout_above="@+id/connect"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect"
+        android:id="@+id/connect"
+        android:layout_alignTop="@+id/d"
+        android:layout_centerHorizontal="true"
+        android:alpha="255"
+        style="@style/Base.Theme.AppCompat.Light.Dialog" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/joybutton"
+        android:background="@null"
+        android:src="@mipmap/circlejoystick_s"
+        android:layout_alignTop="@+id/a"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/f"
+        android:layout_alignBottom="@+id/c" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/coordinates"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@+id/f" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/serialOut"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/e"
+        android:layout_alignEnd="@+id/b" />
+
+</RelativeLayout>

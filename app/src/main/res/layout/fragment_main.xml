@@ -68,15 +68,6 @@
         android:background="#ff250c26"
         android:textColor="#ffa95ff6" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/address"
-        android:hint="Bluetooth Address"
-        android:layout_marginBottom="24dp"
-        android:layout_above="@+id/connect"
-        android:layout_centerHorizontal="true" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -2,13 +2,6 @@
 <items version="2" >
 
     <item
-        jar="/Users/ernestwong/Desktop/AndroidProject/joystick-controller/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/jars/classes.jar"
-        jumboMode="false"
-        revision="22.0.1"
-        sha1="a3ff3c506644c820eb2bdf06e8339f72be578551">
-        <dex dex="/Users/ernestwong/Desktop/AndroidProject/joystick-controller/app/build/intermediates/pre-dexed/debug/classes-6272bbe24685931eb13aebcac9045d4984eeb5cd.jar" />
-    </item>
-    <item
         jar="/Users/ernestwong/Desktop/AndroidProject/joystick-controller/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.1.1/jars/libs/internal_impl-22.1.1.jar"
         jumboMode="false"
         revision="22.0.1"
@@ -21,6 +14,13 @@
         revision="22.0.1"
         sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
         <dex dex="/Users/ernestwong/Desktop/AndroidProject/joystick-controller/app/build/intermediates/pre-dexed/debug/classes-e5e3619a48965d06cf3797d6ec794f1430c498ca.jar" />
+    </item>
+    <item
+        jar="/Users/ernestwong/Desktop/AndroidProject/joystick-controller/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.1.1/jars/classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="a3ff3c506644c820eb2bdf06e8339f72be578551">
+        <dex dex="/Users/ernestwong/Desktop/AndroidProject/joystick-controller/app/build/intermediates/pre-dexed/debug/classes-6272bbe24685931eb13aebcac9045d4984eeb5cd.jar" />
     </item>
     <item
         jar="/Users/ernestwong/android-sdks/extras/android/m2repository/com/android/support/support-annotations/22.1.1/support-annotations-22.1.1.jar"

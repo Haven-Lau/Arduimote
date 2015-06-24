@@ -336,57 +336,7 @@ public class MainActivityFragment extends Fragment {
                 return false;
             }
         });
-<<<<<<< HEAD
-        // Get bluetooth address
-        Button connect = (Button)rootView.findViewById(R.id.connect);
-        connect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Button connectBtn = (Button)rootView.findViewById(R.id.connect);
-                EditText temp = (EditText) rootView.findViewById(R.id.address);
-                address = temp.getText().toString();
 
-                // Get the bluetooth device
-                BluetoothDevice device = null;
-                try {
-                    device = mAdapter.getRemoteDevice(address);
-                }catch (Exception e){
-                    Toast.makeText(getActivity().getApplicationContext(),"Invalid Address",Toast.LENGTH_LONG).show();
-                }
-                if (device == null)
-                    return;
-
-                try {
-                    mSocket = createBluetoothSocket(device);
-                } catch (Exception e) {
-
-                }
-
-                mAdapter.cancelDiscovery();
-
-                try {
-                    // try connecting to socket
-                    mSocket.connect();
-                } catch (Exception e) {
-                    try {
-                        mSocket.close();
-                    } catch (Exception e1) {
-                    }
-                }
-
-                try {
-                    outStream = mSocket.getOutputStream();
-                    timer.schedule(sendMessage, 0, 25);
-                    Toast.makeText(getActivity().getApplicationContext(), "Connection Established", Toast.LENGTH_SHORT).show();
-                    temp.setEnabled(false);
-                    connectBtn.setEnabled(false);
-                } catch (IOException e) {
-
-                }
-            }
-        });
-=======
->>>>>>> master
         return rootView;
     }
 

@@ -76,15 +76,6 @@
         android:layout_below="@+id/joybutton"
         android:layout_toStartOf="@+id/connect" />
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/address"
-        android:hint="Bluetooth Address"
-        style="@style/Base.TextAppearance.AppCompat.Inverse"
-        android:layout_below="@+id/coordinates"
-        android:layout_centerHorizontal="true" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="35dp"

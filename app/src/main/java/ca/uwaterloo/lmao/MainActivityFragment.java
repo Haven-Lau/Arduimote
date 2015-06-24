@@ -78,7 +78,6 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         final TextView serO = (TextView) rootView.findViewById(R.id.serialOut);
-
         // Send message
         timer = new Timer();
         sendMessage = new TimerTask() {

@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Controller</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Bluetooth Settings</string>
+    <string name="app_name">Joystick Controller for VEX</string>
+    <string name="action_settings">Bluetooth Connect</string>
 </resources>

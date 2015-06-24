@@ -23,11 +23,19 @@ public class MainActivity extends ActionBarActivity {
     private Set<BluetoothDevice> pairedDevices = null;
     private ArrayAdapter<String> BTArrayAdapter = null;
     private ListView connectController = null;
+    public View mDecorView = getWindow().getDecorView();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mDecorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+                        );
+
         BTArrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1);
     }
@@ -56,8 +64,8 @@ public class MainActivity extends ActionBarActivity {
             pairedDevices = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
 
             for (BluetoothDevice device : pairedDevices) {
-                BTArrayAdapter.add(device.getName() + "\n"
-                        + device.getAddress());
+                    BTArrayAdapter.add(device.getName() + "\n"
+                            + device.getAddress());
             }
 
             // Sort the ListView

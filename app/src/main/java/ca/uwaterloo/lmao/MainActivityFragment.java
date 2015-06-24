@@ -41,14 +41,20 @@ public class MainActivityFragment extends Fragment {
     private OutputStream outStream = null;
     private String address = "";
     private int message = 0;
-    private int aButton = 0;
-    private int bButton = 0;
-    private int cButton = 0;
-    private int dButton = 0;
-    private int eButton = 0;
-    private int fButton = 0;
+    private int aButton = 1;
+    private int bButton = 1;
+    private int cButton = 1;
+    private int dButton = 1;
+    private int eButton = 1;
+    private int fButton = 1;
     private float xcoord = 0;
     private float ycoord = 0;
+    private int f1;
+    private int s2;
+    private int t3;
+    private int f4;
+    private int CS;
+    private int case_ = 0;
     private int xPower = 0; // processed x-y power
     private int yPower = 0;
     private float initX = 0; // initial touch position
@@ -70,6 +76,7 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        final TextView serO = (TextView) rootView.findViewById(R.id.serialOut);
 
         // Send message
         timer = new Timer();
@@ -79,72 +86,101 @@ public class MainActivityFragment extends Fragment {
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                                // encode data into 1 big block
+                                data_ = 0;
+                                data_ = data_ | (long) (xPower + 509) << 22;
+                                data_ = data_ | (long) (yPower + 509) << 12;
+                                data_ = data_ | (long) (aButton) << 11;
+                                data_ = data_ | (long) (cButton) << 10;
+                                data_ = data_ | (long) (bButton) << 9;
+                                data_ = data_ | (long) (dButton) << 8;
+                                data_ = data_ | (long) (1) << 7;
+                                data_ = data_ | (long) (fButton) << 6;
+                                data_ = data_ | (long) (eButton) << 5;
+                                // break down into 4 bytes for transmission
+                                f1 = (int) (data_ >> 24);
+                                s2 = (int) ((data_ & 0x00FF0000) >> 16);
+                                t3 = (int) ((data_ & 0x0000FF00) >> 8);
+                                f4 = (int) ((data_ & 0x000000FF));
+                                CS = 8;
+                                // XOR checksum
+                                CS ^= f1;
+                                CS ^= s2;
+                                CS ^= t3;
+                                CS ^= f4;
 
-                        TextView serO = (TextView) rootView.findViewById(R.id.serialOut);
-                        data_ = 0;
-                        data_ = data_ | (long)(xPower + 509) << 22;
-                        data_ = data_ | (long)(yPower + 509) << 12;
-                        data_ = data_ | (long)(bButton) << 11;
-                        data_ = data_ | (long)(dButton) << 10;
-                        data_ = data_ | (long)(aButton) << 9;
-                        data_ = data_ | (long)(cButton) << 8;
-                        data_ = data_ | (long)(fButton) << 6;
-                        data_ = data_ | (long)(eButton) << 5;
-
-                        serO.setText(String.valueOf(data_));
-
-                        int f1 = (int) (data_ >> 24);
-                        int s2 = (int) ((data_ & 0x00FF0000) >> 16);
-                        int t3 = (int) ((data_ & 0x0000FF00) >> 8);
-                        int f4 = (int) ((data_ & 0x000000FF));
-                        int CS = 4;
-
-                        CS^=f1;
-                        CS^=s2;
-                        CS^=t3;
-                        CS^=f4;
-
-                        try {
-                            message = 0x06 ;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        try {
-                            message = 0x85 ;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        try {
-                            message = 0x04 ;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        try {
-                            message = f1 ;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        try {
-                            message = s2 ;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        try {
-                            message = t3 ;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        try {
-                            message = f4 ;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        try {
-                            message = CS ;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-
+                                try {
+                                    message = 0x06;
+                                    outStream.write(message);
+                                } catch (Exception e) {
+                                }
+                                case_++;
+                                try {
+                                    message = 0x85;
+                                    outStream.write(message);
+                                } catch (Exception e) {
+                                }
+                                case_++;
+                                try {
+                                    message = 0x08;
+                                    outStream.write(message);
+                                } catch (Exception e) {
+                                }
+                                case_++;
+                                try {
+                                    message = f1;
+                                    outStream.write(message);
+                                } catch (Exception e) {
+                                }
+                                case_++;
+                                try {
+                                    message = 0;
+                                    outStream.write(message);
+                                } catch (Exception e) {
+                                }
+                                case_++;
+                                try {
+                                    message = s2;
+                                    outStream.write(message);
+                                } catch (Exception e) {
+                                }
+                                case_++;
+                                try {
+                                    message = 0;
+                                    outStream.write(message);
+                                } catch (Exception e) {
+                                }
+                                case_++;
+                                try {
+                                    message = t3;
+                                    outStream.write(message);
+                                } catch (Exception e) {
+                                }
+                                case_++;
+                                try {
+                                    message = 0;
+                                    outStream.write(message);
+                                } catch (Exception e) {
+                                }
+                                case_++;
+                                try {
+                                    message = f4;
+                                    outStream.write(message);
+                                } catch (Exception e) {
+                                }
+                                case_++;
+                                try {
+                                    message = 0;
+                                    outStream.write(message);
+                                } catch (Exception e) {
+                                }
+                                case_++;
+                                try {
+                                    message = CS;
+                                    outStream.write(message);
+                                } catch (Exception e) {
+                                }
+                                case_ = 0;
                     }
                 });
             }
@@ -161,10 +197,10 @@ public class MainActivityFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        aButton = 1;
+                        aButton = 0;
                         return true;
                     case MotionEvent.ACTION_UP:
-                        aButton = 0;
+                        aButton = 1;
                         return true;
                 }
                 return false;
@@ -178,10 +214,10 @@ public class MainActivityFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        bButton = 1;
+                        bButton = 0;
                         return true;
                     case MotionEvent.ACTION_UP:
-                        bButton = 0;
+                        bButton = 1;
                         return true;
                 }
                 return false;
@@ -195,10 +231,10 @@ public class MainActivityFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        cButton = 1;
+                        cButton = 0;
                         return true;
                     case MotionEvent.ACTION_UP:
-                        cButton = 0;
+                        cButton = 1;
                         return true;
                 }
                 return false;
@@ -212,10 +248,10 @@ public class MainActivityFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        dButton = 1;
+                        dButton = 0;
                         return true;
                     case MotionEvent.ACTION_UP:
-                        dButton = 0;
+                        dButton = 1;
                         return true;
                 }
                 return false;
@@ -229,10 +265,10 @@ public class MainActivityFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        eButton = 1;
+                        eButton = 0;
                         return true;
                     case MotionEvent.ACTION_UP:
-                        eButton = 0;
+                        eButton = 1;
                         return true;
                 }
                 return false;
@@ -246,10 +282,10 @@ public class MainActivityFragment extends Fragment {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        fButton = 1;
+                        fButton = 0;
                         return true;
                     case MotionEvent.ACTION_UP:
-                        fButton = 0;
+                        fButton = 1;
                         return true;
                 }
                 return false;
@@ -284,8 +320,8 @@ public class MainActivityFragment extends Fragment {
                         joy.setY(origY - yPower / 2);
                         return true;
                     case MotionEvent.ACTION_UP:
-                        xcoord = 0;
-                        ycoord = 0;
+                        xcoord = 509;
+                        ycoord = 509;
                         initX = 0;
                         initY = 0;
                         xPower = 0;
@@ -293,7 +329,7 @@ public class MainActivityFragment extends Fragment {
                         joy.setX(origX);
                         joy.setY(origY);
                         joy.setImageResource(R.mipmap.circlejoystick_s);
-                        textView.setText("X: " + String.valueOf(xcoord) + " Y: " + String.valueOf(ycoord));
+                        textView.setText("X: " + String.valueOf((int)(xcoord)) + " Y: " + String.valueOf((int)(ycoord)));
                         return true;
                 }
                 return false;
@@ -338,7 +374,7 @@ public class MainActivityFragment extends Fragment {
 
                 try {
                     outStream = mSocket.getOutputStream();
-                    timer.schedule(sendMessage, 0, 10);
+                    timer.schedule(sendMessage, 0, 25);
                     Toast.makeText(getActivity().getApplicationContext(), "Connection Established", Toast.LENGTH_SHORT).show();
                     temp.setEnabled(false);
                     connectBtn.setEnabled(false);

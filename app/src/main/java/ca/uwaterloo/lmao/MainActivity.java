@@ -56,9 +56,8 @@ public class MainActivity extends ActionBarActivity {
             pairedDevices = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
 
             for (BluetoothDevice device : pairedDevices) {
-                if (device.getName().contains("Shimmer"))
-                    BTArrayAdapter.add(device.getName() + "\n"
-                            + device.getAddress());
+                BTArrayAdapter.add(device.getName() + "\n"
+                        + device.getAddress());
             }
 
             // Sort the ListView

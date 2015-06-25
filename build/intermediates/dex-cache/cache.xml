@@ -2,11 +2,32 @@
 <items version="2" >
 
     <item
+        jar="C:\Users\haven\Documents\GitHub\joystick-controller\joystick-controller\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.1.1\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="c95ba8152923e4872e86a82cfcba9a51c0214328">
+        <dex dex="C:\Users\haven\Documents\GitHub\joystick-controller\joystick-controller\app\build\intermediates\pre-dexed\debug\classes-894bb162e754b03248c6b28bbf7027c471172210.jar" />
+    </item>
+    <item
+        jar="C:\Users\haven\Documents\GitHub\joystick-controller\joystick-controller\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.1.1\jars\libs\internal_impl-22.1.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="9e070ad32b2700b0343e8e0cccc437733d91ba3a">
+        <dex dex="C:\Users\haven\Documents\GitHub\joystick-controller\joystick-controller\app\build\intermediates\pre-dexed\debug\internal_impl-22.1.1-4b8871210b9462da69a0b92855509b325726a1b7.jar" />
+    </item>
+    <item
         jar="C:\Users\haven\Documents\LMAO-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.1.1\jars\libs\internal_impl-22.1.1.jar"
         jumboMode="false"
         revision="22.0.1"
         sha1="9e070ad32b2700b0343e8e0cccc437733d91ba3a">
         <dex dex="C:\Users\haven\Documents\LMAO-master\app\build\intermediates\pre-dexed\debug\internal_impl-22.1.1-5a6bb02dac8d0dcadb91ea3a0e9e86799c78aa0b.jar" />
+    </item>
+    <item
+        jar="C:\Users\haven\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.1.1\support-annotations-22.1.1.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
+        <dex dex="C:\Users\haven\Documents\LMAO-master\app\build\intermediates\pre-dexed\debug\support-annotations-22.1.1-5e9343ffc6c6194a8608a2d6473df514fdb52da5.jar" />
     </item>
     <item
         jar="C:\Users\haven\Documents\LMAO-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.1.1\jars\classes.jar"
@@ -23,11 +44,11 @@
         <dex dex="C:\Users\haven\Documents\LMAO-master\app\build\intermediates\pre-dexed\debug\classes-54c00c1687348bdddcc71825ee4bf24349098509.jar" />
     </item>
     <item
-        jar="C:\Users\haven\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.1.1\support-annotations-22.1.1.jar"
+        jar="C:\Users\haven\Documents\GitHub\joystick-controller\joystick-controller\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.1.1\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="01d051a6bfb1218b1db2d3a5af0480ac2c25c42a">
-        <dex dex="C:\Users\haven\Documents\LMAO-master\app\build\intermediates\pre-dexed\debug\support-annotations-22.1.1-5e9343ffc6c6194a8608a2d6473df514fdb52da5.jar" />
+        sha1="a3ff3c506644c820eb2bdf06e8339f72be578551">
+        <dex dex="C:\Users\haven\Documents\GitHub\joystick-controller\joystick-controller\app\build\intermediates\pre-dexed\debug\classes-6da667fce24a2fc3344a15d5b5d3827ecd34a63d.jar" />
     </item>
 
 </items>

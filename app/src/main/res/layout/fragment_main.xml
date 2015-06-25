@@ -172,5 +172,27 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:text="GYRO"
+        android:id="@+id/gyroButton"
+        android:layout_alignTop="@+id/button2"
+        android:layout_centerHorizontal="true"
+        android:textStyle="bold"
+        android:textSize="8dp"
+        android:textColor="#ff787979"
+        android:autoText="false"
+        android:background="@drawable/buttonshape_gyro"
+        android:clickable="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/gyroText"
+        android:layout_above="@+id/button"
+        android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>

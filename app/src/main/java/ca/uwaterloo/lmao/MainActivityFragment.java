@@ -3,8 +3,14 @@ package ca.uwaterloo.lmao;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.os.Bundle;
+import android.hardware.SensorManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.Image;
 import android.os.Build;
 import android.os.Handler;
@@ -50,6 +56,7 @@ public class MainActivityFragment extends Fragment {
     private int eButton = 1;
     private int fButton = 1;
     private int btButton = 0;
+    private int gyButton = 0;
     private float xcoord = 0;
     private float ycoord = 0;
     private int f1;
@@ -289,6 +296,28 @@ public class MainActivityFragment extends Fragment {
                         return true;
                     case MotionEvent.ACTION_UP:
                         fButton = 1;
+                        return true;
+                }
+                return false;
+            }
+        });
+
+        // Set fButton = 1 when F is pressed
+        final Button gyroButton = (Button)rootView.findViewById(R.id.gyroButton);
+        gyroButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        if(gyButton == 1){
+                            // already on, turning off
+                            gyroButton.setTextColor(Color.parseColor("#ff787979"));
+                            gyButton = 0;
+                        }else{
+                            // already off, turning on
+                            gyroButton.setTextColor(Color.parseColor("#9932CC"));
+                            gyButton = 1;
+                        }
                         return true;
                 }
                 return false;

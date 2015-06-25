@@ -1,6 +1,11 @@
 package ca.uwaterloo.lmao;
 
 import android.app.AlertDialog;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -20,10 +25,15 @@ import java.util.Set;
 
 
 public class MainActivity extends ActionBarActivity {
+    private static SensorManager mSensorManager;
+    private static Sensor mSensor;
     private static MainActivity mMainActivity = null;
     private static Set<BluetoothDevice> pairedDevices = null;
     private static ArrayAdapter<String> BTArrayAdapter = null;
     private static ListView connectController = null;
+    public static int x;
+    public static int y;
+
     private Handler mHandler = new Handler();
     private Runnable immersiveView = new Runnable() {
         public void run() {
@@ -41,10 +51,12 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mMainActivity = MainActivity.this;
+        mSensorManager = (SensorManager) getSystemService(MainActivity.SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
         BTArrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1);
     }
-
 
     @Override
     public void onWindowFocusChanged (boolean hasFocus) {

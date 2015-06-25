@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -48,6 +49,7 @@ public class MainActivityFragment extends Fragment {
     private int dButton = 1;
     private int eButton = 1;
     private int fButton = 1;
+    private int btButton = 0;
     private float xcoord = 0;
     private float ycoord = 0;
     private int f1;
@@ -278,7 +280,7 @@ public class MainActivityFragment extends Fragment {
 
         // Set fButton = 1 when F is pressed
         Button f = (Button)rootView.findViewById(R.id.f);
-        f.setOnTouchListener(new View.OnTouchListener(){
+        f.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
@@ -287,6 +289,19 @@ public class MainActivityFragment extends Fragment {
                         return true;
                     case MotionEvent.ACTION_UP:
                         fButton = 1;
+                        return true;
+                }
+                return false;
+            }
+        });
+
+        ImageButton btButton = (ImageButton)rootView.findViewById(R.id.btButton);
+        btButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        MainActivity.explodeDialog2();
                         return true;
                 }
                 return false;

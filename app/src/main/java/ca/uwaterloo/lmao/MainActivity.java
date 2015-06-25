@@ -20,10 +20,10 @@ import java.util.Set;
 
 
 public class MainActivity extends ActionBarActivity {
-
-    private Set<BluetoothDevice> pairedDevices = null;
-    private ArrayAdapter<String> BTArrayAdapter = null;
-    private ListView connectController = null;
+    private static MainActivity mMainActivity = null;
+    private static Set<BluetoothDevice> pairedDevices = null;
+    private static ArrayAdapter<String> BTArrayAdapter = null;
+    private static ListView connectController = null;
     private Handler mHandler = new Handler();
     private Runnable immersiveView = new Runnable() {
         public void run() {
@@ -40,6 +40,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mMainActivity = MainActivity.this;
         BTArrayAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1);
     }
@@ -59,68 +60,58 @@ public class MainActivity extends ActionBarActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+    public static void explodeDialog2(){
+        mMainActivity.explodeDialog();
+    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void explodeDialog(){
+        // Clear BlueTooth list
+        BTArrayAdapter.clear();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            // Clear BlueTooth list
-            BTArrayAdapter.clear();
+        // Get paired devices
+        pairedDevices = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
 
-            // Get paired devices
-            pairedDevices = BluetoothAdapter.getDefaultAdapter().getBondedDevices();
-
-            for (BluetoothDevice device : pairedDevices) {
-                    BTArrayAdapter.add(device.getName() + "\n"
-                            + device.getAddress());
-            }
-
-            // Sort the ListView
-            BTArrayAdapter.sort(new Comparator<String>() {
-                public int compare(String object1, String object2) {
-                    int res = String.CASE_INSENSITIVE_ORDER.compare(
-                            object1.toString(), object2.toString());
-                    return res;
-                }
-            });
-
-            // Build an alert dialog
-            final AlertDialog.Builder alertDialog = new AlertDialog.Builder(
-                    MainActivity.this);
-            LayoutInflater inflater = getLayoutInflater();
-            View convertView = inflater.inflate(R.layout.custom, null);
-            alertDialog.setView(convertView);
-            alertDialog.setTitle("Connect Controller");
-            connectController = (ListView) convertView
-                    .findViewById(R.id.listView1);
-            connectController.setAdapter(BTArrayAdapter);
-            final Dialog dialog = alertDialog.show();
-
-            connectController.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                    // Get BlueTooth Address
-                    String temp = (String) connectController.getAdapter().getItem(
-                            position);
-                    String address = temp.substring(temp.length() - 17,
-                            temp.length());
-
-                    // Connect Device
-                    MainActivityFragment.connect(address,getApplicationContext());
-
-                    // Exit Dialog
-                    dialog.dismiss();
-                }
-            });
-            return true;
+        for (BluetoothDevice device : pairedDevices) {
+            BTArrayAdapter.add(device.getName() + "\n"
+                    + device.getAddress());
         }
-        return super.onOptionsItemSelected(item);
 
+        // Sort the ListView
+        BTArrayAdapter.sort(new Comparator<String>() {
+            public int compare(String object1, String object2) {
+                int res = String.CASE_INSENSITIVE_ORDER.compare(
+                        object1.toString(), object2.toString());
+                return res;
+            }
+        });
+
+        // Build an alert dialog
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+        LayoutInflater inflater = getLayoutInflater();
+        View convertView = inflater.inflate(R.layout.custom, null);
+        alertDialog.setView(convertView);
+        alertDialog.setTitle("Connect Controller");
+        connectController = (ListView) convertView
+                .findViewById(R.id.listView1);
+        connectController.setAdapter(BTArrayAdapter);
+        final Dialog dialog = alertDialog.show();
+
+        connectController.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // Get BlueTooth Address
+                String temp = (String) connectController.getAdapter().getItem(
+                        position);
+                String address = temp.substring(temp.length() - 17,
+                        temp.length());
+
+                // Connect Device
+                MainActivityFragment.connect(address,getApplicationContext());
+
+                // Exit Dialog
+                dialog.dismiss();
+            }
+        });
     }
 }

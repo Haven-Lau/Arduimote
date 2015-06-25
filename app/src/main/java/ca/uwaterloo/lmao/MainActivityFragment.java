@@ -11,23 +11,18 @@ import android.hardware.SensorManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -47,7 +42,6 @@ public class MainActivityFragment extends Fragment {
     private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private static BluetoothAdapter mAdapter = null;
     private static OutputStream outStream = null;
-    private String address = "";
     private int message = 0;
     private int aButton = 1;
     private int bButton = 1;
@@ -380,6 +374,31 @@ public class MainActivityFragment extends Fragment {
                 return false;
             }
         });
+
+        // Get Sensor Manager
+        SensorManager sensorManager = (SensorManager) rootView.getContext()
+                .getSystemService(rootView.getContext().SENSOR_SERVICE);
+
+        // Get Sensor
+        Sensor accelerometer = sensorManager
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        // Sensor Event Listener
+        SensorEventListener acceleListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                // x = event.values[0], y = event.values[1], z = event.values[2]
+                Log.d("123",String.format("x: %f, y: %f", event.values[0],event.values[1]));
+            }
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                // No need code here
+            }
+        };
+
+        // Register Listener to sensor
+        sensorManager.registerListener(acceleListener, accelerometer,
+                SensorManager.SENSOR_DELAY_FASTEST);
 
         return rootView;
     }

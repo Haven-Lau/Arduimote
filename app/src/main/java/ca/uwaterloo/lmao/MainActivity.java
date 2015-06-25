@@ -2,10 +2,7 @@ package ca.uwaterloo.lmao;
 
 import android.app.AlertDialog;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.app.Activity;
 import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -14,7 +11,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;

@@ -3,24 +3,23 @@ package ca.uwaterloo.lmao;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.os.Bundle;
 import android.hardware.SensorManager;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +30,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
-import static java.lang.Math.*;
+import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.hypot;
+import static java.lang.Math.sin;
 
 
 /**
@@ -49,7 +51,6 @@ public class MainActivityFragment extends Fragment {
     private int dButton = 1;
     private int eButton = 1;
     private int fButton = 1;
-    private int btButton = 0;
     private int gyButton = 0;
     private float xcoord = 0;
     private float ycoord = 0;
@@ -70,8 +71,10 @@ public class MainActivityFragment extends Fragment {
     private double joyAngle = 0;
     private static BluetoothSocket mSocket = null;
     private static Timer timer;
-    private static TimerTask sendMessage;
     private final Handler handler = new Handler();
+    private static BluetoothDevice device;
+    private ImageView btButton;
+    private ImageView disconnectButton;
 
     public MainActivityFragment() {
     }
@@ -82,113 +85,6 @@ public class MainActivityFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         final TextView serO = (TextView) rootView.findViewById(R.id.serialOut);
-        // Send message
-        timer = new Timer();
-        sendMessage = new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                                // encode data into 1 big block
-                                data_ = 0;
-                                data_ = data_ | (long) (xPower + 509) << 22;
-                                data_ = data_ | (long) (yPower + 509) << 12;
-                                data_ = data_ | (long) (aButton) << 11;
-                                data_ = data_ | (long) (cButton) << 10;
-                                data_ = data_ | (long) (bButton) << 9;
-                                data_ = data_ | (long) (dButton) << 8;
-                                data_ = data_ | (long) (1) << 7;
-                                data_ = data_ | (long) (fButton) << 6;
-                                data_ = data_ | (long) (eButton) << 5;
-                                // break down into 4 bytes for transmission
-                                f1 = (int) (data_ >> 24);
-                                s2 = (int) ((data_ & 0x00FF0000) >> 16);
-                                t3 = (int) ((data_ & 0x0000FF00) >> 8);
-                                f4 = (int) ((data_ & 0x000000FF));
-                                CS = 8;
-                                // XOR checksum
-                                CS ^= f1;
-                                CS ^= s2;
-                                CS ^= t3;
-                                CS ^= f4;
-
-                                try {
-                                    message = 0x06;
-                                    outStream.write(message);
-                                } catch (Exception e) {
-                                }
-                                case_++;
-                                try {
-                                    message = 0x85;
-                                    outStream.write(message);
-                                } catch (Exception e) {
-                                }
-                                case_++;
-                                try {
-                                    message = 0x08;
-                                    outStream.write(message);
-                                } catch (Exception e) {
-                                }
-                                case_++;
-                                try {
-                                    message = f1;
-                                    outStream.write(message);
-                                } catch (Exception e) {
-                                }
-                                case_++;
-                                try {
-                                    message = 0;
-                                    outStream.write(message);
-                                } catch (Exception e) {
-                                }
-                                case_++;
-                                try {
-                                    message = s2;
-                                    outStream.write(message);
-                                } catch (Exception e) {
-                                }
-                                case_++;
-                                try {
-                                    message = 0;
-                                    outStream.write(message);
-                                } catch (Exception e) {
-                                }
-                                case_++;
-                                try {
-                                    message = t3;
-                                    outStream.write(message);
-                                } catch (Exception e) {
-                                }
-                                case_++;
-                                try {
-                                    message = 0;
-                                    outStream.write(message);
-                                } catch (Exception e) {
-                                }
-                                case_++;
-                                try {
-                                    message = f4;
-                                    outStream.write(message);
-                                } catch (Exception e) {
-                                }
-                                case_++;
-                                try {
-                                    message = 0;
-                                    outStream.write(message);
-                                } catch (Exception e) {
-                                }
-                                case_++;
-                                try {
-                                    message = CS;
-                                    outStream.write(message);
-                                } catch (Exception e) {
-                                }
-                                case_ = 0;
-                    }
-                });
-            }
-        };
 
         // Get Bluetooth adapter
         mAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -297,37 +193,40 @@ public class MainActivityFragment extends Fragment {
         });
 
         // Set fButton = 1 when F is pressed
-        final Button gyroButton = (Button)rootView.findViewById(R.id.gyroButton);
-        gyroButton.setOnTouchListener(new View.OnTouchListener() {
+        //final Button gyroButton = (Button)rootView.findViewById(R.id.gyroButton);
+        //gyroButton.setOnTouchListener(new View.OnTouchListener() {
+        //    @Override
+        //    public boolean onTouch(View v, MotionEvent event) {
+        //        switch (event.getAction()) {
+        //            case MotionEvent.ACTION_DOWN:
+        //                if(gyButton == 1){
+        //                    // already on, turning off
+        //                    gyroButton.setTextColor(Color.parseColor("#ff787979"));
+        //                    gyButton = 0;
+        //                }else{
+        //                    // already off, turning on
+        //                    gyroButton.setTextColor(Color.parseColor("#9932CC"));
+        //                    gyButton = 1;
+        //                }
+        //                return true;
+        //        }
+        //        return false;
+        //    }
+        //});
+
+        btButton = (ImageView)rootView.findViewById(R.id.btButton);
+        btButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        if(gyButton == 1){
-                            // already on, turning off
-                            gyroButton.setTextColor(Color.parseColor("#ff787979"));
-                            gyButton = 0;
-                        }else{
-                            // already off, turning on
-                            gyroButton.setTextColor(Color.parseColor("#9932CC"));
-                            gyButton = 1;
-                        }
-                        return true;
-                }
-                return false;
+            public void onClick(View v) {
+                MainActivity.explodeDialog2();
             }
         });
 
-        ImageButton btButton = (ImageButton)rootView.findViewById(R.id.btButton);
-        btButton.setOnTouchListener(new View.OnTouchListener() {
+        disconnectButton = (ImageView)rootView.findViewById(R.id.disconnect);
+        disconnectButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        MainActivity.explodeDialog2();
-                        return true;
-                }
-                return false;
+            public void onClick(View v) {
+                disconnectDevice();
             }
         });
 
@@ -388,7 +287,6 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 // x = event.values[0], y = event.values[1], z = event.values[2]
-                Log.d("123",String.format("x: %f, y: %f", event.values[0],event.values[1]));
             }
             @Override
             public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -411,7 +309,6 @@ public class MainActivityFragment extends Fragment {
                 startActivityForResult(new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE),1);
             }
         }
-        Log.d("123",mAdapter.isEnabled() + "");
     }
 
     private static BluetoothSocket createBluetoothSocket(BluetoothDevice device) throws IOException {
@@ -424,12 +321,13 @@ public class MainActivityFragment extends Fragment {
         return device.createInsecureRfcommSocketToServiceRecord(MY_UUID);
     }
 
-    public static void connect (String address, Context context) {
-        BluetoothDevice device = null;
+    public void connect (String address, Context context) {
+        device = null;
         try {
             device = mAdapter.getRemoteDevice(address);
         }catch (Exception e){
             Toast.makeText(context,"Invalid Address",Toast.LENGTH_LONG).show();
+            device = null;
         }
         if (device == null)
             return;
@@ -454,10 +352,141 @@ public class MainActivityFragment extends Fragment {
 
         try {
             outStream = mSocket.getOutputStream();
-            timer.schedule(sendMessage, 0, 10);
+            timer = new Timer();
+            timer.schedule(new SendMessage(), 0, 10);
             Toast.makeText(context, "Connection Established", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
 
         }
     }
+
+    public static boolean isConnected() {
+        // Check if the phone has already connected to bluetooth device
+        return device != null;
+    }
+
+    private void disconnectDevice() {
+        if (device != null && timer != null) {
+            device = null;
+            timer.cancel();
+            timer.purge();
+            timer = null;
+            try {
+                outStream.close();
+            } catch (Exception e) {
+            }
+            outStream = null;
+            mSocket = null;
+            Toast.makeText(getActivity(), "Bluetooth Device Disconnected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private class SendMessage extends TimerTask {
+        @Override
+        public void run() {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (outStream != null) {
+                        // encode data into 1 big block
+                        data_ = 0;
+                        data_ = data_ | (long) (xPower + 509) << 22;
+                        data_ = data_ | (long) (yPower + 509) << 12;
+                        data_ = data_ | (long) (aButton) << 11;
+                        data_ = data_ | (long) (cButton) << 10;
+                        data_ = data_ | (long) (bButton) << 9;
+                        data_ = data_ | (long) (dButton) << 8;
+                        data_ = data_ | (long) (1) << 7;
+                        data_ = data_ | (long) (fButton) << 6;
+                        data_ = data_ | (long) (eButton) << 5;
+                        // break down into 4 bytes for transmission
+                        f1 = (int) (data_ >> 24);
+                        s2 = (int) ((data_ & 0x00FF0000) >> 16);
+                        t3 = (int) ((data_ & 0x0000FF00) >> 8);
+                        f4 = (int) ((data_ & 0x000000FF));
+                        CS = 8;
+                        // XOR checksum
+                        CS ^= f1;
+                        CS ^= s2;
+                        CS ^= t3;
+                        CS ^= f4;
+
+                        try {
+                            message = 0x06;
+                            outStream.write(message);
+                        } catch (Exception e) {
+                        }
+                        case_++;
+                        try {
+                            message = 0x85;
+                            outStream.write(message);
+                        } catch (Exception e) {
+                        }
+                        case_++;
+                        try {
+                            message = 0x08;
+                            outStream.write(message);
+                        } catch (Exception e) {
+                        }
+                        case_++;
+                        try {
+                            message = f1;
+                            outStream.write(message);
+                        } catch (Exception e) {
+                        }
+                        case_++;
+                        try {
+                            message = 0;
+                            outStream.write(message);
+                        } catch (Exception e) {
+                        }
+                        case_++;
+                        try {
+                            message = s2;
+                            outStream.write(message);
+                        } catch (Exception e) {
+                        }
+                        case_++;
+                        try {
+                            message = 0;
+                            outStream.write(message);
+                        } catch (Exception e) {
+                        }
+                        case_++;
+                        try {
+                            message = t3;
+                            outStream.write(message);
+                        } catch (Exception e) {
+                        }
+                        case_++;
+                        try {
+                            message = 0;
+                            outStream.write(message);
+                        } catch (Exception e) {
+                        }
+                        case_++;
+                        try {
+                            message = f4;
+                            outStream.write(message);
+                        } catch (Exception e) {
+                        }
+                        case_++;
+                        try {
+                            message = 0;
+                            outStream.write(message);
+                        } catch (Exception e) {
+                        }
+                        case_++;
+                        try {
+                            message = CS;
+                            outStream.write(message);
+                        } catch (Exception e) {
+                        }
+                        case_ = 0;
+                    }
+                }
+            });
+        }
+    }
 }
+

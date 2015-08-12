@@ -51,7 +51,7 @@
         android:layout_height="60dp"
         android:id="@+id/d"
         android:background="@drawable/buttonshape_d"
-        android:textColor="#ff256491"
+        android:textColor="#356488"
         style="@style/AlertDialog.AppCompat.Light"
         android:text="D"
         android:elevation="30dp"
@@ -66,7 +66,7 @@
         android:layout_above="@+id/b"
         android:layout_toStartOf="@+id/b"
         android:background="@drawable/buttonshape_a"
-        android:textColor="#ffaa231d"
+        android:textColor="#872f36"
         style="@style/AlertDialog.AppCompat.Light"
         android:elevation="30dp"
         android:translationZ="30dp" />
@@ -78,7 +78,7 @@
         android:id="@+id/b"
         android:layout_marginEnd="24dp"
         android:background="@drawable/buttonshape_b"
-        android:textColor="#ffc2c12d"
+        android:textColor="#976828"
         style="@style/AlertDialog.AppCompat.Light"
         android:elevation="30dp"
         android:layout_centerVertical="true"
@@ -92,7 +92,7 @@
         android:layout_below="@+id/b"
         android:layout_toStartOf="@+id/b"
         android:background="@drawable/buttonshape_c"
-        android:textColor="#ff4a9572"
+        android:textColor="#39893C"
         style="@style/AlertDialog.AppCompat.Light"
         android:text="C"
         android:elegantTextHeight="false"
@@ -164,14 +164,14 @@
         android:layout_toStartOf="@+id/e"
         android:layout_alignEnd="@+id/b" />
 
-    <ImageButton
+    <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:id="@+id/btButton"
-        android:background="@drawable/ic_setting"
+        android:src="@drawable/ic_bluetooth"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
-
+    <!--
     <Button
         android:layout_width="50dp"
         android:layout_height="20dp"
@@ -184,7 +184,7 @@
         android:textColor="#ff787979"
         android:autoText="false"
         android:background="@drawable/buttonshape_gyro"
-        android:clickable="true" />
+        android:clickable="true" /> -->
 
     <TextView
         android:layout_width="wrap_content"
@@ -193,6 +193,15 @@
         android:id="@+id/gyroText"
         android:layout_above="@+id/button"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_marginLeft="8dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/disconnect"
+        android:src="@drawable/ic_disconnect"
+        android:layout_alignBottom="@+id/btButton"
+        android:layout_toEndOf="@+id/btButton" />
 
 
 </RelativeLayout>

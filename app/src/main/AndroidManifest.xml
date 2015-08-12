@@ -7,12 +7,12 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="Controller"
+        android:label="Arduimote"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity"
             android:screenOrientation="landscape"
-            android:label="Controller">
+            android:label="Arduimote">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

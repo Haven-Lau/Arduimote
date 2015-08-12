@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.Comparator;
 import java.util.Set;
@@ -29,6 +30,7 @@ public class MainActivity extends ActionBarActivity {
     private static ListView connectController = null;
     public static int x;
     public static int y;
+    private Toast warning;
 
     private Handler mHandler = new Handler();
     private Runnable immersiveView = new Runnable() {
@@ -73,6 +75,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void explodeDialog(){
+        if (MainActivityFragment.isConnected()) {
+            showToast("Please disconnect any bluetooth device before connecting a new device");
+            return;
+        }
         // Clear BlueTooth list
         BTArrayAdapter.clear();
 
@@ -115,11 +121,20 @@ public class MainActivity extends ActionBarActivity {
                         temp.length());
 
                 // Connect Device
-                MainActivityFragment.connect(address,getApplicationContext());
+                new MainActivityFragment().connect(address,getApplicationContext());
 
                 // Exit Dialog
                 dialog.dismiss();
             }
         });
+    }
+
+    private void showToast(String text) {
+        if (warning == null) {
+            warning = Toast.makeText(this,text,Toast.LENGTH_SHORT);
+        }
+        warning.setText(text);
+        warning.setDuration(Toast.LENGTH_SHORT);
+        warning.show();
     }
 }

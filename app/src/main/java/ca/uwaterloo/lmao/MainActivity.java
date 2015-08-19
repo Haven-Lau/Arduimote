@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothDevice;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -120,8 +121,10 @@ public class MainActivity extends ActionBarActivity {
                 String address = temp.substring(temp.length() - 17,
                         temp.length());
 
+                Log.e("HI", address);
+
                 // Connect Device
-                new MainActivityFragment().connect(address,getApplicationContext());
+                MainActivityFragment.connect(address,getApplicationContext());
 
                 // Exit Dialog
                 dialog.dismiss();

@@ -11,8 +11,7 @@
     <Button
         android:layout_width="300dp"
         android:layout_height="250dp"
-        android:id="@+id/button"
-        android:clickable="false"
+        android:id="@+id/arduimote"
         android:visibility="visible"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
@@ -27,6 +26,7 @@
         android:textSize="@dimen/abc_action_bar_icon_vertical_padding_material"
         android:singleLine="false"
         android:elegantTextHeight="false"
+        android:clickable="false"
         android:longClickable="false"
         android:shadowColor="#383838"
         android:shadowDx="3"

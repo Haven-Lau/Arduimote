@@ -1,5 +1,6 @@
 package ca.uwaterloo.lmao;
 
+import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -13,10 +14,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -75,7 +78,8 @@ public class MainActivityFragment extends Fragment {
     private static BluetoothDevice device;
     private ImageView btButton;
     private ImageView disconnectButton;
-
+    private static TimerTask sendMessage;
+    private static boolean isSchedule = false;
     public MainActivityFragment() {
     }
 
@@ -85,7 +89,114 @@ public class MainActivityFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         final TextView serO = (TextView) rootView.findViewById(R.id.serialOut);
+        timer = new Timer();
+        sendMessage = new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (outStream != null) {
+                            // encode data into 1 big block
+                            data_ = 0;
+                            data_ = data_ | (long) (xPower + 509) << 22;
+                            data_ = data_ | (long) (yPower + 509) << 12;
+                            data_ = data_ | (long) (aButton) << 11;
+                            data_ = data_ | (long) (cButton) << 10;
+                            data_ = data_ | (long) (bButton) << 9;
+                            data_ = data_ | (long) (dButton) << 8;
+                            data_ = data_ | (long) (1) << 7;
+                            data_ = data_ | (long) (fButton) << 6;
+                            data_ = data_ | (long) (eButton) << 5;
+                            // break down into 4 bytes for transmission
+                            f1 = (int) (data_ >> 24);
+                            s2 = (int) ((data_ & 0x00FF0000) >> 16);
+                            t3 = (int) ((data_ & 0x0000FF00) >> 8);
+                            f4 = (int) ((data_ & 0x000000FF));
+                            CS = 8;
+                            // XOR checksum
+                            CS ^= f1;
+                            CS ^= s2;
+                            CS ^= t3;
+                            CS ^= f4;
 
+                            try {
+                                message = 0x06;
+                                outStream.write(message);
+                            } catch (Exception e) {
+                            }
+                            case_++;
+                            try {
+                                message = 0x85;
+                                outStream.write(message);
+                            } catch (Exception e) {
+                            }
+                            case_++;
+                            try {
+                                message = 0x08;
+                                outStream.write(message);
+                            } catch (Exception e) {
+                            }
+                            case_++;
+                            try {
+                                message = f1;
+                                outStream.write(message);
+                            } catch (Exception e) {
+                            }
+                            case_++;
+                            try {
+                                message = 0;
+                                outStream.write(message);
+                            } catch (Exception e) {
+                            }
+                            case_++;
+                            try {
+                                message = s2;
+                                outStream.write(message);
+                            } catch (Exception e) {
+                            }
+                            case_++;
+                            try {
+                                message = 0;
+                                outStream.write(message);
+                            } catch (Exception e) {
+                            }
+                            case_++;
+                            try {
+                                message = t3;
+                                outStream.write(message);
+                            } catch (Exception e) {
+                            }
+                            case_++;
+                            try {
+                                message = 0;
+                                outStream.write(message);
+                            } catch (Exception e) {
+                            }
+                            case_++;
+                            try {
+                                message = f4;
+                                outStream.write(message);
+                            } catch (Exception e) {
+                            }
+                            case_++;
+                            try {
+                                message = 0;
+                                outStream.write(message);
+                            } catch (Exception e) {
+                            }
+                            case_++;
+                            try {
+                                message = CS;
+                                outStream.write(message);
+                            } catch (Exception e) {
+                            }
+                            case_ = 0;
+                        }
+                    }
+                });
+            }
+        };
         // Get Bluetooth adapter
         mAdapter = BluetoothAdapter.getDefaultAdapter();
         checkBTState();
@@ -321,16 +432,12 @@ public class MainActivityFragment extends Fragment {
         return device.createInsecureRfcommSocketToServiceRecord(MY_UUID);
     }
 
-    public void connect (String address, Context context) {
-        device = null;
+    public static void connect (String address, Context context) {
         try {
             device = mAdapter.getRemoteDevice(address);
         }catch (Exception e){
             Toast.makeText(context,"Invalid Address",Toast.LENGTH_LONG).show();
-            device = null;
         }
-        if (device == null)
-            return;
 
         try {
             mSocket = createBluetoothSocket(device);
@@ -352,8 +459,12 @@ public class MainActivityFragment extends Fragment {
 
         try {
             outStream = mSocket.getOutputStream();
-            timer = new Timer();
-            timer.schedule(new SendMessage(), 0, 10);
+            if (!isSchedule) {
+                timer.schedule(sendMessage, 0, 10);
+                isSchedule = true;
+            } else {
+                Log.e("HI", "Timer already schedule");
+            }
             Toast.makeText(context, "Connection Established", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
 
@@ -366,11 +477,9 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void disconnectDevice() {
-        if (device != null && timer != null) {
+        if (device != null) {
             device = null;
-            timer.cancel();
-            timer.purge();
-            timer = null;
+
             try {
                 outStream.close();
             } catch (Exception e) {
@@ -380,113 +489,7 @@ public class MainActivityFragment extends Fragment {
             Toast.makeText(getActivity(), "Bluetooth Device Disconnected", Toast.LENGTH_SHORT).show();
         }
     }
-
-    private class SendMessage extends TimerTask {
-        @Override
-        public void run() {
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (outStream != null) {
-                        // encode data into 1 big block
-                        data_ = 0;
-                        data_ = data_ | (long) (xPower + 509) << 22;
-                        data_ = data_ | (long) (yPower + 509) << 12;
-                        data_ = data_ | (long) (aButton) << 11;
-                        data_ = data_ | (long) (cButton) << 10;
-                        data_ = data_ | (long) (bButton) << 9;
-                        data_ = data_ | (long) (dButton) << 8;
-                        data_ = data_ | (long) (1) << 7;
-                        data_ = data_ | (long) (fButton) << 6;
-                        data_ = data_ | (long) (eButton) << 5;
-                        // break down into 4 bytes for transmission
-                        f1 = (int) (data_ >> 24);
-                        s2 = (int) ((data_ & 0x00FF0000) >> 16);
-                        t3 = (int) ((data_ & 0x0000FF00) >> 8);
-                        f4 = (int) ((data_ & 0x000000FF));
-                        CS = 8;
-                        // XOR checksum
-                        CS ^= f1;
-                        CS ^= s2;
-                        CS ^= t3;
-                        CS ^= f4;
-
-                        try {
-                            message = 0x06;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        case_++;
-                        try {
-                            message = 0x85;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        case_++;
-                        try {
-                            message = 0x08;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        case_++;
-                        try {
-                            message = f1;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        case_++;
-                        try {
-                            message = 0;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        case_++;
-                        try {
-                            message = s2;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        case_++;
-                        try {
-                            message = 0;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        case_++;
-                        try {
-                            message = t3;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        case_++;
-                        try {
-                            message = 0;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        case_++;
-                        try {
-                            message = f4;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        case_++;
-                        try {
-                            message = 0;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        case_++;
-                        try {
-                            message = CS;
-                            outStream.write(message);
-                        } catch (Exception e) {
-                        }
-                        case_ = 0;
-                    }
-                }
-            });
-        }
-    }
 }
+
+
 
